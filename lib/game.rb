@@ -14,7 +14,7 @@ class Game
     [6, 4, 2]
   ]
 
-  def initialize(player_1 = Players::Human, player_2 = Players::Human, board = Board.new)
+  def initialize(player_1 = Players::Human.new("X"), player_2 = Players::Human.new("O"), board = Board.new)
     @player_1 = player_1
     @player_2 = player_2
     @board = board
@@ -22,10 +22,35 @@ class Game
 
   def current_player
     if board.turn_count % 2 == 0
-      "O"
+      current_player = player_1
     else
-      "X"
+      current_player = player_2
     end
+  end
+
+  def over?
+    if board.full?
+      true
+    # elsif self.won?
+    #  true
+    else
+      false
+    end
+  end
+
+  def won?
+    WIN_COMBINATIONS.each do |win_array|
+      if win_array.all? { |win_index| board.taken?(win_index) }
+        win_index_1 = win_array[0]
+        win_index_2 = win_array[1]
+        win_index_3 = win_array[2]
+
+        if board.cells[win_index_1] == board.cells[win_index_2] && board.cells[win_index_1] == board.cells[win_index_3]
+          win_array
+        end
+      end
+    end
+    false
   end
 
 end
