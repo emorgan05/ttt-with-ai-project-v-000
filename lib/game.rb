@@ -54,14 +54,15 @@ class Game
   end
 
   def draw?
-    if board.full? && self.won? == false
+    if board.full? && won? == false
       true
     end
   end
 
   def winner
-    if self.won?
-      array = self.won?.to_a
+    if won?
+      array = won?.to_a
+      binding.pry
       index = array[0]
       winner = board.cells[index]
       winner
