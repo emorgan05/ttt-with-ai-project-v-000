@@ -46,11 +46,26 @@ class Game
         win_index_3 = win_array[2]
 
         if board.cells[win_index_1] == board.cells[win_index_2] && board.cells[win_index_1] == board.cells[win_index_3]
-          win_array
+          return win_index_1, win_index_2, win_index_3
         end
       end
     end
     false
+  end
+
+  def draw?
+    if board.full? && self.won? == false
+      true
+    end
+  end
+
+  def winner
+    if self.won?
+      array = self.won?.to_a
+      index = array[0]
+      winner = board.cells[index]
+      winner
+    end
   end
 
 end
