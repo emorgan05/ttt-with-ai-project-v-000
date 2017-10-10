@@ -69,7 +69,7 @@ class Game
     player = current_player
     input = player.move(@board)
     if board.valid_move?(input)
-      binding.pry
+      #binding.pry
       board.update(input, player)
       board.display
     else
