@@ -15,6 +15,7 @@ class Game
   ]
 
   def initialize(player_1 = Players::Human.new("X"), player_2 = Players::Human.new("O"), board = Board.new)
+    binding.pry
     @player_1 = player_1
     @player_2 = player_2
     @board = board
@@ -83,34 +84,40 @@ class Game
     end
     if won?
       puts "Congratulations #{winner}!"
+      puts "Would you like to play again?"
     end
     if draw?
       puts "Cat's Game!"
     end
   end
 
-  def start
+  def self.start
     puts "Welcome to Tic Tac Toe!"
     puts "How many players do you have? Type 0, 1, or 2:"
     num_of_players = gets.strip.to_i
 
     if num_of_players == 0
-      Game.new(Players::Computer.new("X"), Players::Computer.new("O"))
+      game = Game.new(Players::Computer.new("X"), Players::Computer.new("O"))
+      @board.display
 
     elsif num_of_players == 1
       puts "Do you want to go first? Y/n"
       input = gets.strip
 
       if input == "Y" || input == "y"
-        Game.new(Players::Human.new("X"), Players::Computer.new("O"))
+        game = Game.new(Players::Human.new("X"), Players::Computer.new("O"))
+        @board.display
       else
-        Game.new(Players::Computer.new("X"), Players::Human.new("O"))
+        game = Game.new(Players::Computer.new("X"), Players::Human.new("O"))
+        @board.display
       end
 
     else
-      Game.new
+      game = Game.new
+      puts "Who wants to be X? X will play first."
+      @board.display
     end
-    self.play
+    game.play
   end
 
 end
