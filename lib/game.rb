@@ -31,8 +31,6 @@ class Game
   def over?
     if board.full?
       true
-    # elsif self.won?
-    #  true
     else
       false
     end
@@ -40,13 +38,12 @@ class Game
 
   def won?
     WIN_COMBINATIONS.each do |win_array|
-      if win_array.all? { |win_index| board.taken?(win_index) }
+      if win_array.all? { |win_index| board.taken?(win_index + 1) }
         win_index_1 = win_array[0]
         win_index_2 = win_array[1]
         win_index_3 = win_array[2]
-
         if board.cells[win_index_1] == board.cells[win_index_2] && board.cells[win_index_1] == board.cells[win_index_3]
-          return win_index_1, win_index_2, win_index_3
+          return win_array
         end
       end
     end
@@ -61,8 +58,7 @@ class Game
 
   def winner
     if won?
-      array = won?.to_a
-      binding.pry
+      array = won?
       index = array[0]
       winner = board.cells[index]
       winner
@@ -70,14 +66,51 @@ class Game
   end
 
   def turn
-    puts "Please enter 1-9:"
-    input = gets.strip
+    player = current_player
+    input = player.move(@board)
     if board.valid_move?(input)
-      board.update(input, current_player)
+      binding.pry
+      board.update(input, player)
       board.display
     else
       turn
     end
+  end
+
+  def play
+    until over? || won? || draw?
+      turn
+    end
+    if won?
+      puts "Congratulations #{winner}!"
+    end
+    if draw?
+      puts "Cat's Game!"
+    end
+  end
+
+  def start
+    puts "Welcome to Tic Tac Toe!"
+    puts "How many players do you have? Type 0, 1, or 2:"
+    num_of_players = gets.strip.to_i
+
+    if num_of_players == 0
+      Game.new(Players::Computer.new("X"), Players::Computer.new("O"))
+
+    elsif num_of_players == 1
+      puts "Do you want to go first? Y/n"
+      input = gets.strip
+
+      if input == "Y" || input == "y"
+        Game.new(Players::Human.new("X"), Players::Computer.new("O"))
+      else
+        Game.new(Players::Computer.new("X"), Players::Human.new("O"))
+      end
+
+    else
+      Game.new
+    end
+    self.play
   end
 
 end
