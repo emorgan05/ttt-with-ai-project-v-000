@@ -15,7 +15,6 @@ class Game
   ]
 
   def initialize(player_1 = Players::Human.new("X"), player_2 = Players::Human.new("O"), board = Board.new)
-    binding.pry
     @player_1 = player_1
     @player_2 = player_2
     @board = board
@@ -70,7 +69,6 @@ class Game
     player = current_player
     input = player.move(@board)
     if board.valid_move?(input)
-      #binding.pry
       board.update(input, player)
       board.display
     else
@@ -84,7 +82,6 @@ class Game
     end
     if won?
       puts "Congratulations #{winner}!"
-      puts "Would you like to play again?"
     end
     if draw?
       puts "Cat's Game!"
