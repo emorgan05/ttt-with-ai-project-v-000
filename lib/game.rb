@@ -113,10 +113,9 @@ class Game
     game.play
     puts "Would you like to exit? Y/n"
     response = gets.strip
-    while response == "n" do
+    if response == "n"
       Game.start
-    end
-    if response == "Y" || "y"
+    else
       exit
     end
   end
