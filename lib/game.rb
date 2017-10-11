@@ -95,7 +95,6 @@ class Game
 
     if num_of_players == 0
       game = Game.new(Players::Computer.new("X"), Players::Computer.new("O"))
-      @board.display
 
     elsif num_of_players == 1
       puts "Do you want to go first? Y/n"
@@ -103,18 +102,23 @@ class Game
 
       if input == "Y" || input == "y"
         game = Game.new(Players::Human.new("X"), Players::Computer.new("O"))
-        @board.display
       else
         game = Game.new(Players::Computer.new("X"), Players::Human.new("O"))
-        @board.display
       end
 
     else
       game = Game.new
       puts "Who wants to be X? X will play first."
-      @board.display
     end
     game.play
+    puts "Would you like to exit? Y/n"
+    response = gets.strip
+    while response == "n" do
+      Game.start
+    end
+    if response == "Y" || "y"
+      exit
+    end
   end
 
 end
